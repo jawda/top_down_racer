@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c1m5vk3rejca7" path="res://Assets/Images/Monaco.png" id="1_fv5kj"]
 [ext_resource type="Texture2D" uid="uid://2msta3ane5h5" path="res://Assets/Images/WaterBg.png" id="1_okhpi"]
 [ext_resource type="PackedScene" uid="uid://b7yvc0pjj1e00" path="res://Scenes/Car/Car.tscn" id="3_0ld5s"]
+[ext_resource type="PackedScene" uid="uid://jb5c7c73alhf" path="res://Scenes/OilDropper/OilDropper.tscn" id="5_vfgym"]
 
 [sub_resource type="Curve2D" id="Curve2D_0do6f"]
 _data = {
@@ -39,5 +40,12 @@ polygon = PackedVector2Array(484, 183, 417, 90, 389, 63, 359, 48, 312, 61, 261, 
 [node name="TrackPath" type="Path2D" parent="." unique_id=84508687]
 position = Vector2(-1, 4)
 curve = SubResource("Curve2D_0do6f")
+
+[node name="OilDropper" parent="TrackPath" unique_id=1735177977 node_paths=PackedStringArray("oil_container") instance=ExtResource("5_vfgym")]
+position = Vector2(608, 504)
+rotation = 0.27721292
+oil_container = NodePath("../../OilContainer")
+
+[node name="OilContainer" type="Node" parent="." unique_id=2022889303]
 
 [connection signal="area_entered" from="TrackCollision" to="." method="_on_track_collision_area_entered"]
