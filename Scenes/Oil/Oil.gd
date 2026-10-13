@@ -12,4 +12,4 @@ func _ready() -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
-	if area is Car: print("oil entered") # Replace with function body.
+	if area is Car: area.hit_oil() # Replace with function body.
