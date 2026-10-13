@@ -10,6 +10,8 @@ class_name Car
 @export var bounce_time: float = 0.8
 @export var bounce_force: float = 30.0
 
+@onready var crash_effect: CPUParticles2D = $CrashEffect
+
 var _throttle: float = 0.0
 var _steer: float = 0.0
 var _velocity : float = 0.0
@@ -60,12 +62,11 @@ func bounce_done()-> void:
 	_bounce_tween = null
 	pass
 	
-func bounce() -> void:
+func bounce(dir_to_path: Vector2) -> void:
 	set_physics_process(false) #stop input
 	_velocity = 0.0
-	_bounce_target = position + (-transform.x * bounce_force)  #bounce back
-	#position += -transform.x * bounce_force
-	#await get_tree().create_timer(bounce_time).timeout #wait
+	_bounce_target = position + (dir_to_path * bounce_force)  #bounce back
+
 	if _bounce_tween and _bounce_tween.is_running(): 
 		_bounce_tween.kill()
 	
@@ -73,11 +74,12 @@ func bounce() -> void:
 	_bounce_tween = create_tween()
 	_bounce_tween.set_parallel()
 	_bounce_tween.tween_property(self, "position", _bounce_target, bounce_time)
-	_bounce_tween.tween_property(self, "rotation", rotation_degrees + 540.0, bounce_time)
+	_bounce_tween.tween_property(self, "rotation", rotation_degrees + 720.0, bounce_time)
 	_bounce_tween.set_parallel(false)
 	_bounce_tween.finished.connect(bounce_done)
 	
 	pass
 
-func hit_boundry() -> void:
-	bounce()
+func hit_boundry(dir_to_path: Vector2) -> void:
+	crash_effect.restart() #show explosive particles
+	bounce(dir_to_path)

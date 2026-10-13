@@ -2,9 +2,14 @@
 
 [ext_resource type="Script" uid="uid://c7wptq8fdtqfg" path="res://Scenes/Car/Car.gd" id="1_6tdsx"]
 [ext_resource type="Texture2D" uid="uid://b7wmt1hcagsow" path="res://Assets/Images/CarRed.png" id="1_fnsqd"]
+[ext_resource type="Texture2D" uid="uid://blv5vu5ryjp8t" path="res://Assets/Images/Dot.png" id="3_a0hww"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_06ef1"]
 height = 34.0
+
+[sub_resource type="Curve" id="Curve_06ef1"]
+_data = [Vector2(0, 0.52212393), 0.0, 0.0, 0, 0, Vector2(0.4957627, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [node name="Car" type="Area2D" unique_id=1378796695]
 collision_mask = 0
@@ -18,3 +23,23 @@ texture = ExtResource("1_fnsqd")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=838564294]
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_06ef1")
+
+[node name="CrashEffect" type="CPUParticles2D" parent="." unique_id=798598797]
+emitting = false
+amount = 32
+texture = ExtResource("3_a0hww")
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.76
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 50.0
+orbit_velocity_min = -2.0
+orbit_velocity_max = 2.0
+radial_accel_min = 40.0
+radial_accel_max = 80.0
+scale_amount_min = 0.01
+scale_amount_max = 0.03
+scale_amount_curve = SubResource("Curve_06ef1")
+color = Color(1, 0.5411765, 0.32156864, 1)

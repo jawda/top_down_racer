@@ -5,6 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://2msta3ane5h5" path="res://Assets/Images/WaterBg.png" id="1_okhpi"]
 [ext_resource type="PackedScene" uid="uid://b7yvc0pjj1e00" path="res://Scenes/Car/Car.tscn" id="3_0ld5s"]
 
+[sub_resource type="Curve2D" id="Curve2D_0do6f"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 608, 504, -5.3240004, 63.888, 5.3240004, -63.888, 873, 514, -55.273766, 67.84906, 55.273766, -67.84906, 756, 339, -26.62, 100.0912, 26.62, -100.0912, 956, 264, 75.11419, -21.258732, -75.11419, 21.258732, 708, 66, 66.99722, -22.289455, -66.99722, 22.289455, 531, 283, 62.358948, 22.675982, -62.358948, -22.675982, 343, 110, 0, -53.855453, 0, 53.855453, 116, 317, -35.43122, -52.438206, 35.43122, 52.438206, 167, 500, -77.7304, 7.4536, 77.7304, -7.4536, 404, 465, 0, 0, 0, 0, 608, 504)
+}
+point_count = 11
+
 [node name="Track" type="Node" unique_id=1919192135]
 script = ExtResource("1_0do6f")
 
@@ -29,5 +35,9 @@ polygon = PackedVector2Array(334, 184, 295, 209, 246, 249, 206, 298, 193, 321, 1
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="TrackCollision" unique_id=465635354]
 polygon = PackedVector2Array(484, 183, 417, 90, 389, 63, 359, 48, 312, 61, 261, 84, 181, 141, 121, 205, 71, 283, 58, 342, 50, 402, 62, 462, 92, 504, 140, 540, 217, 554, 459, 525, 608, 561, 801, 625, 895, 622, 940, 576, 953, 514, 915, 448, 830, 388, 794, 360, 857, 371, 948, 381, 1015, 361, 1057, 325, 1069, 274, 1062, 228, 1011, 160, 928, 109, 853, 70, 723, 17, 650, 35, 577, 101, 504, 178, 507, -82, 1300, -96, 1299, 748, -100, 730, -94, -106, 507, -86, 507, -83, 506, 176)
+
+[node name="TrackPath" type="Path2D" parent="." unique_id=84508687]
+position = Vector2(-1, 4)
+curve = SubResource("Curve2D_0do6f")
 
 [connection signal="area_entered" from="TrackCollision" to="." method="_on_track_collision_area_entered"]
