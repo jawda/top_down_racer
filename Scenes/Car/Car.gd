@@ -1,14 +1,20 @@
 extends Area2D
 
+class_name Car
+
 @export var max_speed: float = 380.0
 @export var friction: float = 300.0
 @export var acceleration: float = 150.0
 @export var steer_strength: float = 6.0
 @export var min_steer_factor: float = 0.5
+@export var bounce_time: float = 0.8
+@export var bounce_force: float = 30.0
 
 var _throttle: float = 0.0
 var _steer: float = 0.0
 var _velocity : float = 0.0
+var _bounce_tween: Tween
+var _bounce_target: Vector2 = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -40,7 +46,7 @@ func apply_throttle(delta: float) -> void:
 	
 func get_steer_factor()-> float:
 	return clampf(
-		1.0 - (_velocity / max_speed), 
+		1.0 - pow(_velocity / max_speed, 2.0), 
 		min_steer_factor,
 		1.0
 	) * steer_strength
@@ -48,3 +54,30 @@ func get_steer_factor()-> float:
 func apply_rotation(delta: float)-> void:
 	rotate(get_steer_factor() * delta * _steer)
 	pass
+
+func bounce_done()-> void:
+	set_physics_process(true)
+	_bounce_tween = null
+	pass
+	
+func bounce() -> void:
+	set_physics_process(false) #stop input
+	_velocity = 0.0
+	_bounce_target = position + (-transform.x * bounce_force)  #bounce back
+	#position += -transform.x * bounce_force
+	#await get_tree().create_timer(bounce_time).timeout #wait
+	if _bounce_tween and _bounce_tween.is_running(): 
+		_bounce_tween.kill()
+	
+	rotation_degrees = fmod(rotation_degrees, 360.0)
+	_bounce_tween = create_tween()
+	_bounce_tween.set_parallel()
+	_bounce_tween.tween_property(self, "position", _bounce_target, bounce_time)
+	_bounce_tween.tween_property(self, "rotation", rotation_degrees + 540.0, bounce_time)
+	_bounce_tween.set_parallel(false)
+	_bounce_tween.finished.connect(bounce_done)
+	
+	pass
+
+func hit_boundry() -> void:
+	bounce()
